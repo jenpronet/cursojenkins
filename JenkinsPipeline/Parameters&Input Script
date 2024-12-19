@@ -26,21 +26,26 @@ pipeline {
     stages {
         stage('Etapa 1') { 
             steps {
-                echo "Arranca la Etapa 1" 
-		     
-		            sh 'sleep 10'
-		        }
-	      }
+                echo "Iniciando la Etapa 1..."
+                sh 'sleep 10'
+            }
+        }
         stage('Etapa 2') {
             input {
-                message "Continuar el proyecto?"
-                ok "Si, continuar por favor."
+                message "¿Deseas continuar con el proyecto?"
+                ok "Sí, continuar por favor."
                 parameters {
-                    string(name: 'PERSONA', defaultValue: 'Julian', description: 'A quien debo saludar?')
+                    string(name: 'PERSONA', defaultValue: 'Julian', description: '¿A quién debo saludar?')
                 }
             }
             steps {
-                echo "Hola, ${PERSONA}, un placer conocerte."
+                script {
+                    if (params.PERSONA?.trim()) {
+                        echo "Hola, ${params.PERSONA}, un placer conocerte."
+                    } else {
+                        error "No se especificó un nombre para saludar. Por favor, reinicia con un valor válido."
+                    }
+                }
             }
         }
     }
