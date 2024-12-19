@@ -1,12 +1,17 @@
 pipeline {
     agent any
     triggers {
+        // Ejecución programada cada 2 minutos
         cron('H/2 * * * *')
     }
     stages {
-        stage('Example') {
+        stage('Ejemplo') {
             steps {
-                echo 'Hello World'
+                script {
+                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))
+                    echo "Ejecución programada: ${timestamp}"
+                    echo "¡Hola, mundo!"
+                }
             }
         }
     }
