@@ -1,17 +1,23 @@
 pipeline {
     agent any
     stages {
-        stage('Example') {
+        stage('Ejemplo') {
             steps {
-                sh 'hola'
+                script {
+                    echo "Iniciando el script..."
+                    try {
+                        sh 'hola' // Comando que causará un error para demostrar el bloque de post-failure
+                    } catch (Exception e) {
+                        echo "Error detectado: ${e.message}"
+                        error "Fallo intencional para la clase de Post"
+                    }
+                }
             }
         }
     }
     post { 
         failure { 
-            echo 'Esta ejecución ha fallado'
+            echo 'La ejecución del pipeline ha fallado. Por favor, revisa los logs para más detalles.'
         }
     }
 }
-
-#Script con error para la clase de Post
